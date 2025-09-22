@@ -1,3 +1,4 @@
+from unittest import result
 from . import app
 import os
 import json
@@ -79,7 +80,20 @@ def create_picture():
 
 @app.route("/picture/<int:id>", methods=["PUT"])
 def update_picture(id):
-    pass
+    result = next(
+        (
+            (index, picture)
+            for index, picture in enumerate(data)
+            if picture["id"] == id
+        ),
+        None,
+    )
+    if result is None:
+        return jsonify(message="picture not found"), 404
+
+    index, picture = result
+    data[index] = request.json
+    return jsonify(picture), 201
 
 
 ######################################################################
