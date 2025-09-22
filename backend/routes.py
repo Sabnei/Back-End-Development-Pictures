@@ -65,7 +65,7 @@ def create_picture():
         if picture_in["id"] == picture["id"]:
             return (
                 jsonify(
-                    message=f"picture with id {picture_in["id"]} already present"
+                    Message=f"picture with id {picture_in["id"]} already present"
                 ),
                 302,
             )
@@ -93,7 +93,7 @@ def update_picture(id):
 
     index, picture = result
     data[index] = request.json
-    return jsonify(picture), 201
+    return picture, 201
 
 
 ######################################################################
@@ -101,4 +101,8 @@ def update_picture(id):
 ######################################################################
 @app.route("/picture/<int:id>", methods=["DELETE"])
 def delete_picture(id):
-    pass
+    picture = next((t for t in data if t["id"] == id), None)
+    if picture is None:
+        return jsonify(message="picture not found"), 404
+    data.remove(picture)
+    return "", 204
