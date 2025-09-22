@@ -1,3 +1,4 @@
+from math import pi
 from . import app
 import os
 import json
@@ -46,7 +47,10 @@ def get_pictures():
 
 @app.route("/picture/<int:id>", methods=["GET"])
 def get_picture_by_id(id):
-    pass
+    picture = next((t for t in data if t["id"] == id), None)
+    if picture:
+        return jsonify(picture)
+    return jsonify(message="picture not found"), 404
 
 
 ######################################################################
