@@ -1,3 +1,4 @@
+from email import message
 from math import pi
 from . import app
 import os
@@ -58,7 +59,19 @@ def get_picture_by_id(id):
 ######################################################################
 @app.route("/picture", methods=["POST"])
 def create_picture():
-    pass
+    picture_in = request.json
+    print(picture_in)
+
+    for picture in data:
+        if picture_in["id"] == picture["id"]:
+            return (
+                jsonify(
+                    message=f"picture with id {picture_in["id"]} already present"
+                ),
+                302,
+            )
+    data.append(picture_in)
+    return picture_in, 201
 
 
 ######################################################################
